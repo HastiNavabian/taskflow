@@ -1,27 +1,27 @@
 const mockTasks = [
   {
     id: 1,
-    title: "Task 1",
+    title: "Shower",
     status: "in-progress",
   },
   {
     id: 2,
-    title: "Task 2",
+    title: "Podcast",
     status: "completed",
   },
   {
     id: 3,
-    title: "Task 3",
+    title: "Read a book",
     status: "not-started",
   },
   {
     id: 4,
-    title: "Task 4",
+    title: "Go for a walk",
     status: "in-progress",
   },
   {
     id: 5,
-    title: "Task 5",
+    title: "Learn React",
     status: "completed",
   },
 ];
