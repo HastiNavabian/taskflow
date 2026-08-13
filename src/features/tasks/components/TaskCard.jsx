@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Modal from "./Modal";
+import Button from "./Button";
 function TaskCard({ id, title, status, onStatusChange }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   return (
@@ -13,12 +14,12 @@ function TaskCard({ id, title, status, onStatusChange }) {
         <option value="in-progress">In Progress</option>
         <option value="completed">Completed</option>
       </select>
-      <button onClick={() => setIsModalOpen(true)}>Details</button>
+      <Button onClick={() => setIsModalOpen(true)}>Details</Button>
       {isModalOpen && (
         <Modal>
           <h3>{title}</h3>
           <p> Status : {status}</p>
-          <button onClick={() => setIsModalOpen(false)}>Close</button>
+          <Button onClick={() => setIsModalOpen(false)}>Close</Button>
         </Modal>
       )}
     </div>
