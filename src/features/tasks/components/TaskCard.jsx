@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Modal from "./Modal";
 import Button from "./Button";
-function TaskCard({ id, title, status, onStatusChange }) {
+function TaskCard({ id, title, status, onStatusChange, onDelete }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   return (
     <div className="task-card">
@@ -15,6 +15,9 @@ function TaskCard({ id, title, status, onStatusChange }) {
         <option value="completed">Completed</option>
       </select>
       <Button onClick={() => setIsModalOpen(true)}>Details</Button>
+      <Button variant="danger" onClick={() => onDelete(id)}>
+        Delete
+      </Button>
       {isModalOpen && (
         <Modal>
           <h3>{title}</h3>
