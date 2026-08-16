@@ -146,3 +146,66 @@ h1 {
   border: 1px solid var(--border);
   color: var(--text-muted);
 }
+
+.status-message {
+  padding: 20px;
+  text-align: center;
+  font-size: 16px;
+  color: var(--text-muted);
+}
+
+/* ---- Danger button variant ---- */
+.btn-danger {
+  background: transparent;
+  border: 1px solid #f3c2c2;
+  color: #d64545;
+}
+
+.btn-danger:hover {
+  background: #fdecec;
+}
+
+/* ---- Task card: چیدمان بهتر با چند دکمه ---- */
+.task-card {
+  flex-wrap: wrap;
+}
+
+.task-card .btn {
+  margin-inline-start: auto;
+}
+
+.task-card .btn + .btn {
+  margin-inline-start: 6px;
+}
+
+/* ---- Add task form ---- */
+.column form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.column form input {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 10px;
+  font-size: 14px;
+  font-family: inherit;
+}
+
+.column form input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.column form div {
+  display: flex;
+  gap: 8px;
+}
+
+/* ---- دکمه‌ی "+ Add Task" فاصله از لیست تسک‌ها ---- */
+.column > .btn-secondary:last-child {
+  margin-top: 10px;
+  width: 100%;
+}
