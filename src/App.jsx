@@ -1,119 +1,108 @@
-import { useState, useEffect } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import Column from "./features/tasks/components/Column";
+
 function App() {
-  const [tasks, setTasks] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const queryClient = useQueryClient();
 
-  useEffect(() => {
-    async function fetchTasks() {
-      try {
-        const response = await fetch("http://localhost:3001/tasks");
-        const data = await response.json();
-        setTasks(data);
-        setIsLoading(false);
-      } catch (err) {
-        setError(err.message);
-        setIsLoading(false);
-      }
-    }
+  const {
+    data: tasks = [],
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["tasks"],
+    queryFn: async () => {
+      const response = await fetch("http://localhost:3001/tasks");
+      if (!response.ok)
+        throw new Error(`Server responded with ${response.status}`);
+      return response.json();
+    },
+  });
 
-    fetchTasks();
-  }, []);
-
-  const notStartedTasks = tasks.filter((task) => task.status === "not-started");
-  const inProgressTasks = tasks.filter((task) => task.status === "in-progress");
-  const completedTasks = tasks.filter((task) => task.status === "completed");
-
-  async function updateTaskStatus(id, newStatus) {
-    const previousTasks = tasks;
-
-    setTasks((prevTasks) =>
-      prevTasks.map((task) =>
-        task.id === id ? { ...task, status: newStatus } : task,
-      ),
-    );
-    try {
+  const updateStatusMutation = useMutation({
+    mutationFn: async ({ id, newStatus }) => {
       const response = await fetch(`http://localhost:3001/tasks/${id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status: newStatus }),
       });
-
-      if (!response.ok) {
+      if (!response.ok)
         throw new Error(`Server responded with ${response.status}`);
-      }
-    } catch (err) {
-      console.error("Failed to update task status:", err);
-      setTasks(previousTasks);
-    }
-  }
+    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["tasks"] }),
+  });
 
-  if (isLoading) {
-    return <p className="status-message">Loading...</p>;
-  }
-  if (error) {
-    return <p className="status-message status-error">Error :{error}</p>;
-  }
-
-  async function addTask(title, status) {
-    try {
+  const addTaskMutation = useMutation({
+    mutationFn: async ({ title, status }) => {
       const response = await fetch("http://localhost:3001/tasks", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ title, status }),
       });
-
-      if (!response.ok) {
+      if (!response.ok)
         throw new Error(`Server responded with ${response.status}`);
-      }
-      const newTask = await response.json();
-      setTasks((prevTasks) => [...prevTasks, newTask]);
-    } catch (err) {
-      console.error("Failed to add task:", err);
-    }
-  }
+      return response.json();
+    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["tasks"] }),
+  });
 
-  async function deleteTask(id) {
-    const previousTasks = tasks;
-    setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
-    try {
+  const deleteTaskMutation = useMutation({
+    mutationFn: async (id) => {
       const response = await fetch(`http://localhost:3001/tasks/${id}`, {
         method: "DELETE",
       });
-
-      if (!response.ok) {
+      if (!response.ok)
         throw new Error(`Server responded with ${response.status}`);
-      }
-    } catch (err) {
-      console.error("Failed to delete task:", err);
-      setTasks(previousTasks);
-    }
+    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["tasks"] }),
+  });
+
+  function updateTaskStatus(id, newStatus) {
+    updateStatusMutation.mutate({ id, newStatus });
   }
+  function addTask(title, status) {
+    addTaskMutation.mutate({ title, status });
+  }
+  function deleteTask(id) {
+    deleteTaskMutation.mutate(id);
+  }
+
+  const notStartedTasks = tasks.filter((task) => task.status === "not-started");
+  const inProgressTasks = tasks.filter((task) => task.status === "in-progress");
+  const completedTasks = tasks.filter((task) => task.status === "completed");
+
+  if (isLoading) {
+    return <p className="status-message">Loading...</p>;
+  }
+  if (error) {
+    return (
+      <p className="status-message status-error">Error: {error.message}</p>
+    );
+  }
+
   return (
     <div className="board">
       <Column
         title="Not Started"
+        status="not-started"
         tasks={notStartedTasks}
         onStatusChange={updateTaskStatus}
         onAddTask={addTask}
-        status="not-started"
         onDelete={deleteTask}
       />
       <Column
         title="In Progress"
+        status="in-progress"
         tasks={inProgressTasks}
         onStatusChange={updateTaskStatus}
         onAddTask={addTask}
-        status="in-progress"
         onDelete={deleteTask}
       />
       <Column
         title="Completed"
+        status="completed"
         tasks={completedTasks}
         onStatusChange={updateTaskStatus}
         onAddTask={addTask}
-        status="completed"
         onDelete={deleteTask}
       />
     </div>
