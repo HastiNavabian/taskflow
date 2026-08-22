@@ -196,7 +196,8 @@ h1 {
 
 .column form input:focus {
   outline: none;
-  border-color: var(--accent);
+  /* border-color: var(--accent); */
+  border: 1px solid var(--accent);
 }
 
 .column form div {
