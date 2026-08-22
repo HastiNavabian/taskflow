@@ -1,38 +1,30 @@
 {
   "tasks": [
     {
-      "id": 1,
-      "title": "Shower",
-      "status": "not-started",
-      "priority": "high"
-    },
-    {
       "id": 2,
       "title": "Podcast",
-      "status": "delete",
+      "status": "not-started",
       "priority": "medium"
     },
     {
-      "id": 5,
-      "title": "Learn React",
-      "status": "completed",
-      "priority": "high"
-    },
-    
-    {
-      "title": "Read a book",
+      "title": "Query",
       "status": "in-progress",
-      "id": 7
-    },
-    {
-      "title": "gorbee",
-      "status": "delete",
       "id": 8
     },
     {
-      "title": "Podcast",
+      "title": "State Management",
       "status": "not-started",
-      "id": 9
+      "id": 11
+    },
+    {
+      "title": "Props/Data flow",
+      "status": "completed",
+      "id": 12
+    },
+    {
+      "title": "React Native",
+      "status": "not-started",
+      "id": 13
     }
   ]
 }
