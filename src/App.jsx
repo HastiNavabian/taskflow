@@ -1,8 +1,11 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import Column from "./features/tasks/components/Column";
+import SearchInputs from "./features/tasks/components/SearchInputs";
+import useSearchStore from "./store/searchStore";
 
 function App() {
   const queryClient = useQueryClient();
+  const searchTerm = useSearchStore((state) => state.searchTerm);
 
   const {
     data: tasks = [],
@@ -28,7 +31,23 @@ function App() {
       if (!response.ok)
         throw new Error(`Server responded with ${response.status}`);
     },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["tasks"] }),
+
+    onMutate: async ({ id, newStatus }) => {
+      await queryClient.cancelQueries({ queryKey: ["tasks"] });
+      const previousTasks = queryClient.getQueryData(["tasks"]);
+      queryClient.setQueryData(["tasks"], (old) =>
+        old.map((task) =>
+          task.id === id ? { ...task, status: newStatus } : task,
+        ),
+      );
+      return { previousTasks };
+    },
+    onError: (err, variables, context) => {
+      queryClient.setQueryData(["tasks"], context.previousTasks);
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["tasks"] });
+    },
   });
 
   const addTaskMutation = useMutation({
@@ -42,7 +61,23 @@ function App() {
         throw new Error(`Server responded with ${response.status}`);
       return response.json();
     },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["tasks"] }),
+    onMutate: async ({ title, status }) => {
+      await queryClient.cancelQueries({ queryKey: ["tasks"] });
+      const previousTasks = queryClient.getQueryData(["tasks"]);
+      const tempTask = {
+        id: `temp-${crypto.randomUUID()}`,
+        title,
+        status,
+      };
+      queryClient.setQueryData(["tasks"], (old) => [...old, tempTask]);
+      return { previousTasks };
+    },
+    onError: (err, variables, context) => {
+      queryClient.setQueryData(["tasks"], context.previousTasks);
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["tasks"] });
+    },
   });
 
   const deleteTaskMutation = useMutation({
@@ -53,7 +88,20 @@ function App() {
       if (!response.ok)
         throw new Error(`Server responded with ${response.status}`);
     },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["tasks"] }),
+    onMutate: async (id) => {
+      await queryClient.cancelQueries({ queryKey: ["tasks"] });
+      const previousTasks = queryClient.getQueryData(["tasks"]);
+      queryClient.setQueryData(["tasks"], (old) =>
+        old.filter((task) => task.id !== id),
+      );
+      return { previousTasks };
+    },
+    onError: (err, id, context) => {
+      queryClient.setQueryData(["tasks"], context.previousTasks);
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["tasks"] });
+    },
   });
 
   function updateTaskStatus(id, newStatus) {
@@ -66,9 +114,19 @@ function App() {
     deleteTaskMutation.mutate(id);
   }
 
-  const notStartedTasks = tasks.filter((task) => task.status === "not-started");
-  const inProgressTasks = tasks.filter((task) => task.status === "in-progress");
-  const completedTasks = tasks.filter((task) => task.status === "completed");
+  const filteredTasks = tasks.filter((task) =>
+    task.title.toLowerCase().includes(searchTerm.toLowerCase()),
+  );
+
+  const notStartedTasks = filteredTasks.filter(
+    (task) => task.status === "not-started",
+  );
+  const inProgressTasks = filteredTasks.filter(
+    (task) => task.status === "in-progress",
+  );
+  const completedTasks = filteredTasks.filter(
+    (task) => task.status === "completed",
+  );
 
   if (isLoading) {
     return <p className="status-message">Loading...</p>;
@@ -80,32 +138,38 @@ function App() {
   }
 
   return (
-    <div className="board">
-      <Column
-        title="Not Started"
-        status="not-started"
-        tasks={notStartedTasks}
-        onStatusChange={updateTaskStatus}
-        onAddTask={addTask}
-        onDelete={deleteTask}
-      />
-      <Column
-        title="In Progress"
-        status="in-progress"
-        tasks={inProgressTasks}
-        onStatusChange={updateTaskStatus}
-        onAddTask={addTask}
-        onDelete={deleteTask}
-      />
-      <Column
-        title="Completed"
-        status="completed"
-        tasks={completedTasks}
-        onStatusChange={updateTaskStatus}
-        onAddTask={addTask}
-        onDelete={deleteTask}
-      />
-    </div>
+    <>
+      <div>
+        <SearchInputs />
+      </div>
+
+      <div className="board">
+        <Column
+          title="Not Started"
+          status="not-started"
+          tasks={notStartedTasks}
+          onStatusChange={updateTaskStatus}
+          onAddTask={addTask}
+          onDelete={deleteTask}
+        />
+        <Column
+          title="In Progress"
+          status="in-progress"
+          tasks={inProgressTasks}
+          onStatusChange={updateTaskStatus}
+          onAddTask={addTask}
+          onDelete={deleteTask}
+        />
+        <Column
+          title="Completed"
+          status="completed"
+          tasks={completedTasks}
+          onStatusChange={updateTaskStatus}
+          onAddTask={addTask}
+          onDelete={deleteTask}
+        />
+      </div>
+    </>
   );
 }
 
