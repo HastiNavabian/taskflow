@@ -210,3 +210,25 @@ h1 {
   margin-top: 10px;
   width: 100%;
 }
+
+/* ---- Search input ---- */
+.search-input {
+  width: 100%;
+  max-width: 320px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px 14px;
+  font-size: 14px;
+  font-family: inherit;
+  margin: 24px 32px 8px;
+  background: var(--surface);
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.search-input::placeholder {
+  color: var(--text-muted);
+}
