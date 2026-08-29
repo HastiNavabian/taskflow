@@ -3,7 +3,7 @@
     {
       "id": 2,
       "title": "Podcast",
-      "status": "completed",
+      "status": "not-started",
       "priority": "medium"
     },
     {
@@ -13,7 +13,7 @@
     },
     {
       "title": "State Management",
-      "status": "not-started",
+      "status": "completed",
       "id": 11
     },
     {
