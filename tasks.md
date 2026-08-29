@@ -1,0 +1,2 @@
+1. Add drag and drop functionality to the task board, allowing users to move tasks between columns by dragging and dropping them. This feature enhances the user experience by providing a more intuitive way to manage task statuses.
+2. Let User add new status columns to the task board, allowing for greater flexibility in task management. Users can create custom statuses that fit their workflow, making the application more adaptable to different project needs.
