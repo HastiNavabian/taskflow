@@ -1,5 +1,5 @@
 import Column from "./features/tasks/components/Column";
-import SearchInputs from "./features/tasks/components/SearchInputs";
+import SearchInput from "./features/tasks/components/SearchInput";
 import useSearchStore from "./store/searchStore";
 import useTasks from "./features/tasks/hooks/useTasks";
 
@@ -33,7 +33,7 @@ function App() {
   return (
     <>
       <div>
-        <SearchInputs />
+        <SearchInput />
       </div>
 
       <div className="board">
