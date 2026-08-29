@@ -1,5 +1,22 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import {
+  getTasks,
+  updateTaskStatus as updateTaskStatusApi,
+  createTask,
+  deleteTask as deleteTaskApi,
+} from "../../../services/taskApi";
+async function snapshotAndCancel(queryClient) {
+  await queryClient.cancelQueries({ queryKey: ["tasks"] });
+  return queryClient.getQueryData(["tasks"]);
+}
 
+function rollback(queryClient, context) {
+  queryClient.setQueryData(["tasks"], context.previousTasks);
+}
+
+function syncWithServer(queryClient) {
+  queryClient.invalidateQueries({ queryKey: ["tasks"] });
+}
 function useTasks() {
   const queryClient = useQueryClient();
 
@@ -9,28 +26,14 @@ function useTasks() {
     error,
   } = useQuery({
     queryKey: ["tasks"],
-    queryFn: async () => {
-      const response = await fetch("http://localhost:3001/tasks");
-      if (!response.ok)
-        throw new Error(`Server responded with ${response.status}`);
-      return response.json();
-    },
+    queryFn: getTasks,
   });
 
   const updateStatusMutation = useMutation({
-    mutationFn: async ({ id, newStatus }) => {
-      const response = await fetch(`http://localhost:3001/tasks/${id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status: newStatus }),
-      });
-      if (!response.ok)
-        throw new Error(`Server responded with ${response.status}`);
-    },
+    mutationFn: ({ id, newStatus }) => updateTaskStatusApi(id, newStatus),
 
     onMutate: async ({ id, newStatus }) => {
-      await queryClient.cancelQueries({ queryKey: ["tasks"] });
-      const previousTasks = queryClient.getQueryData(["tasks"]);
+      const previousTasks = await snapshotAndCancel(queryClient);
       queryClient.setQueryData(["tasks"], (old) =>
         old.map((task) =>
           task.id === id ? { ...task, status: newStatus } : task,
@@ -38,28 +41,15 @@ function useTasks() {
       );
       return { previousTasks };
     },
-    onError: (err, variables, context) => {
-      queryClient.setQueryData(["tasks"], context.previousTasks);
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ["tasks"] });
-    },
+    onError: (err, variables, context) => rollback(queryClient, context),
+
+    onSettled: () => syncWithServer(queryClient),
   });
 
   const addTaskMutation = useMutation({
-    mutationFn: async ({ title, status }) => {
-      const response = await fetch("http://localhost:3001/tasks", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title, status }),
-      });
-      if (!response.ok)
-        throw new Error(`Server responded with ${response.status}`);
-      return response.json();
-    },
+    mutationFn: ({ title, status }) => createTask(title, status),
     onMutate: async ({ title, status }) => {
-      await queryClient.cancelQueries({ queryKey: ["tasks"] });
-      const previousTasks = queryClient.getQueryData(["tasks"]);
+      const previousTasks = await snapshotAndCancel(queryClient);
       const tempTask = {
         id: `temp-${crypto.randomUUID()}`,
         title,
@@ -69,34 +59,27 @@ function useTasks() {
       return { previousTasks };
     },
     onError: (err, variables, context) => {
-      queryClient.setQueryData(["tasks"], context.previousTasks);
+      rollback(queryClient, context);
     },
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ["tasks"] });
+      syncWithServer(queryClient);
     },
   });
 
   const deleteTaskMutation = useMutation({
-    mutationFn: async (id) => {
-      const response = await fetch(`http://localhost:3001/tasks/${id}`, {
-        method: "DELETE",
-      });
-      if (!response.ok)
-        throw new Error(`Server responded with ${response.status}`);
-    },
+    mutationFn: (id) => deleteTaskApi(id),
     onMutate: async (id) => {
-      await queryClient.cancelQueries({ queryKey: ["tasks"] });
-      const previousTasks = queryClient.getQueryData(["tasks"]);
+      const previousTasks = await snapshotAndCancel(queryClient);
       queryClient.setQueryData(["tasks"], (old) =>
         old.filter((task) => task.id !== id),
       );
       return { previousTasks };
     },
     onError: (err, id, context) => {
-      queryClient.setQueryData(["tasks"], context.previousTasks);
+      rollback(queryClient, context);
     },
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ["tasks"] });
+      syncWithServer(queryClient);
     },
   });
 
