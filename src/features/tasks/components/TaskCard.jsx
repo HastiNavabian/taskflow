@@ -1,10 +1,24 @@
 import { useState } from "react";
 import Modal from "./Modal";
 import Button from "./Button";
+import { useDraggable } from "@dnd-kit/core";
 function TaskCard({ id, title, status, onStatusChange, onDelete }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { attributes, listeners, setNodeRef, transform } = useDraggable({
+    id: id,
+  });
+  const style = transform
+    ? { transform: `translate(${transform.x}px, ${transform.y}px)` }
+    : undefined;
+
   return (
-    <div className="task-card">
+    <div
+      className="task-card"
+      ref={setNodeRef}
+      style={style}
+      {...listeners}
+      {...attributes}
+    >
       {title}
       <select
         value={status}

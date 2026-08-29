@@ -1,10 +1,15 @@
 import TaskCard from "./TaskCard";
 import Button from "./Button";
 import { useState } from "react";
+import { useDroppable } from "@dnd-kit/core";
 
 function Column({ title, tasks, status, onStatusChange, onAddTask, onDelete }) {
   const [isAdding, setIsAdding] = useState(false);
   const [newTitle, setNewTitle] = useState("");
+
+  const { setNodeRef, isOver } = useDroppable({
+    id: status,
+  });
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -15,7 +20,10 @@ function Column({ title, tasks, status, onStatusChange, onAddTask, onDelete }) {
   }
 
   return (
-    <div className="column">
+    <div
+      className={`column ${isOver ? "column-drag-over" : ""}`}
+      ref={setNodeRef}
+    >
       <h2>{title}</h2>
       {tasks.map((task) => (
         <TaskCard
