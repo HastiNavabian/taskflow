@@ -8,23 +8,18 @@
     },
     {
       "title": "Query",
-      "status": "in-progress",
+      "status": "completed",
       "id": 8
     },
     {
       "title": "State Management",
-      "status": "completed",
+      "status": "in-progress",
       "id": 11
     },
     {
       "title": "Props/Data flow",
-      "status": "completed",
-      "id": 12
-    },
-    {
-      "title": "React Native",
       "status": "not-started",
-      "id": 13
+      "id": 12
     }
   ]
 }
