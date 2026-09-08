@@ -290,11 +290,6 @@ h1 {
   background: var(--surface, #f5f5f5);
 }
 
-.task-title-done {
-  text-decoration: line-through;
-  opacity: 0.6;
-}
-
 /* ---- Board & Columns ---- */
 .board {
   display: flex;
@@ -429,7 +424,7 @@ h1 {
 }
 
 .task-title-done {
-  text-decoration: line-through;
+  /* text-decoration: line-through; */
   opacity: 0.55;
 }
 
