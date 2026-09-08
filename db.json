@@ -4,7 +4,7 @@
       "title": "Query",
       "status": "this-week",
       "id": 8,
-      "completed": true
+      "completed": false
     },
     {
       "title": "State Management",
@@ -22,7 +22,8 @@
       "title": "dklcdlfkc",
       "status": "today",
       "id": 13,
-      "completed": false
+      "completed": false,
+      "dueDate": "2026-09-08"
     },
     {
       "title": "b nh",
@@ -49,15 +50,23 @@
     },
     {
       "title": "dhhdd",
-      "status": "today",
-      "completed": false,
-      "id": 18
+      "status": "this-week",
+      "completed": true,
+      "id": 18,
+      "dueDate": "2026-09-07"
     },
     {
       "title": "تتال",
       "status": "today",
       "completed": false,
-      "id": 19
+      "id": 19,
+      "dueDate": ""
+    },
+    {
+      "title": "پثهص",
+      "status": "this-week",
+      "completed": false,
+      "id": 20
     }
   ]
 }
