@@ -8,13 +8,16 @@ function TaskCard({
   title,
   status,
   completed,
+  dueDate,
   onDelete,
   onToggleCompleted,
+  onDueDateChange,
 }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef(null);
   const triggerRef = useRef(null);
+  const dateInputRef = useRef(null);
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -74,7 +77,11 @@ function TaskCard({
       </div>
 
       {menuOpen && (
-        <div className="task-menu" ref={menuRef}>
+        <div
+          className="task-menu"
+          ref={menuRef}
+          onClick={(e) => e.stopPropagation()}
+        >
           <button
             type="button"
             onClick={() => {
@@ -84,6 +91,19 @@ function TaskCard({
           >
             Details
           </button>
+          <button
+            type="button"
+            onClick={() => dateInputRef.current?.showPicker()}
+          >
+            Edit dates
+          </button>
+          <input
+            ref={dateInputRef}
+            className="hidden-date-input"
+            value={dueDate || ""}
+            onChange={(e) => onDueDateChange(id, e.target.value)}
+            type="date"
+          />
           <button
             type="button"
             onClick={() => {
@@ -101,6 +121,7 @@ function TaskCard({
           <h3>{title}</h3>
           <p>Status: {status}</p>
           <p>Completed: {completed ? "Yes" : "No"}</p>
+          <p>Due date: {dueDate || "None"}</p>
           <Button onClick={() => setIsModalOpen(false)}>Close</Button>
         </Modal>
       )}

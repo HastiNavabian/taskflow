@@ -11,6 +11,7 @@ function Column({
   onAddTask,
   onDelete,
   onToggleCompleted,
+  onDueDateChange,
 }) {
   const [isAdding, setIsAdding] = useState(false);
   const [newTitle, setNewTitle] = useState("");
@@ -92,6 +93,8 @@ function Column({
           onStatusChange={onStatusChange}
           onDelete={onDelete}
           onToggleCompleted={onToggleCompleted}
+          onDueDateChange={onDueDateChange}
+          dueDate={task.dueDate}
         />
       ))}
 

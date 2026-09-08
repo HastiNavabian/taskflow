@@ -20,6 +20,7 @@ function App() {
     deleteTask,
     toggleTaskCompleted,
     moveTask,
+    updateTaskDueDate,
   } = useTasks();
 
   const sensors = useSensors(
@@ -81,6 +82,7 @@ function App() {
             onAddTask={addTask}
             onDelete={deleteTask}
             onToggleCompleted={toggleTaskCompleted}
+            onDueDateChange={updateTaskDueDate}
           />
           <Column
             title="this week"
@@ -90,6 +92,7 @@ function App() {
             onAddTask={addTask}
             onDelete={deleteTask}
             onToggleCompleted={toggleTaskCompleted}
+            onDueDateChange={updateTaskDueDate}
           />
           <Column
             title="Completed"
@@ -99,6 +102,7 @@ function App() {
             onAddTask={addTask}
             onDelete={deleteTask}
             onToggleCompleted={toggleTaskCompleted}
+            onDueDateChange={updateTaskDueDate}
           />
         </div>
       </DndContext>
