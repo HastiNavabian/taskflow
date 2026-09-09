@@ -73,7 +73,9 @@ function App() {
     <>
       <div className="top-bar">
         <SearchInput />
-        <button onClick={toggleTheme}>{theme === "light" ? "🌙" : "☀️"}</button>
+        <button onClick={toggleTheme} className="theme-toggle">
+          {theme === "light" ? "🌙" : "☀️"}
+        </button>
       </div>
 
       <DndContext sensors={sensors} onDragEnd={handleDragEnd}>

@@ -53,7 +53,7 @@ body.theme-transition {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 0 32px 8px;
+  padding: 24px 32px 8px;
 }
 
 .theme-toggle {
@@ -74,7 +74,6 @@ body.theme-transition {
   padding: 10px 14px;
   font-size: 14px;
   font-family: inherit;
-  margin: 24px 32px 8px;
   background: var(--surface);
 }
 
@@ -404,4 +403,31 @@ body.theme-transition {
 .column-drag-over {
   background: var(--drag-over-bg);
   outline: 2px dashed var(--accent);
+}
+
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  font-size: 18px;
+  flex-shrink: 0;
+  transition:
+    background 0.15s ease,
+    transform 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.theme-toggle:hover {
+  background: var(--drag-over-bg);
+  border-color: var(--accent);
+}
+
+.theme-toggle:active {
+  transform: scale(0.92);
 }
