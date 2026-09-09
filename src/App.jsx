@@ -8,6 +8,7 @@ import Column from "./features/tasks/components/Column";
 import SearchInput from "./features/tasks/components/SearchInput";
 import useSearchStore from "./store/searchStore";
 import useTasks from "./features/tasks/hooks/useTasks";
+import { useTheme } from "./context/ThemeContext";
 
 function App() {
   const searchTerm = useSearchStore((state) => state.searchTerm);
@@ -22,6 +23,8 @@ function App() {
     moveTask,
     updateTaskDueDate,
   } = useTasks();
+
+  const { theme, toggleTheme } = useTheme();
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -68,8 +71,9 @@ function App() {
 
   return (
     <>
-      <div>
+      <div className="top-bar">
         <SearchInput />
+        <button onClick={toggleTheme}>{theme === "light" ? "🌙" : "☀️"}</button>
       </div>
 
       <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
