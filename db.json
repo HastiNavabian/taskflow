@@ -4,7 +4,7 @@
       "title": "Query",
       "status": "this-week",
       "id": 8,
-      "completed": false
+      "completed": true
     },
     {
       "title": "State Management",
@@ -14,7 +14,7 @@
     },
     {
       "title": "Props/Data flow",
-      "status": "this-week",
+      "status": "today",
       "id": 12,
       "completed": false
     },
@@ -39,7 +39,7 @@
     {
       "title": "dhjdhjhd",
       "status": "this-week",
-      "completed": true,
+      "completed": false,
       "id": 17
     },
     {
@@ -51,16 +51,22 @@
     },
     {
       "title": "تتال",
-      "status": "today",
-      "completed": false,
+      "status": "this-week",
+      "completed": true,
       "id": 19,
       "dueDate": ""
     },
     {
       "title": "پثهص",
       "status": "this-week",
-      "completed": true,
+      "completed": false,
       "id": 20
+    },
+    {
+      "title": "hgjhg",
+      "status": "today",
+      "completed": false,
+      "id": 21
     }
   ]
 }
