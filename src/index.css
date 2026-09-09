@@ -11,6 +11,28 @@
     -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
+body.light {
+  --bg: #f4f5f7;
+  --surface: #ebecf0;
+  --card-bg: #ffffff;
+  --text: #172b4d;
+  --text-muted: #6b778c;
+  --border: #dfe1e6;
+  --accent: #5aac44;
+  --drag-over-bg: #dfe6f0;
+}
+
+body.dark {
+  --bg: #17191c;
+  --surface: #22272b;
+  --card-bg: #122131;
+  --text: #d1d5db;
+  --text-muted: #8c9bab;
+  --border: #3a3f44;
+  --accent: #6fcf97;
+  --drag-over-bg: #2d3540;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -21,194 +43,26 @@ body {
   color: var(--text);
 }
 
-h1 {
-  font-size: 22px;
-  font-weight: 600;
-  padding: 24px 32px 0;
-  margin: 0;
+body.theme-transition {
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
 }
-
-.board {
-  display: flex;
-  gap: 20px;
-  padding: 24px 32px;
-  align-items: flex-start;
-}
-
-.column {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  width: 280px;
-  padding: 16px;
-  flex-shrink: 0;
-}
-
-.column h2 {
-  font-size: 14px;
-  font-weight: 600;
-  text-transform: capitalize;
-  letter-spacing: 0.04em;
-  color: var(--text-muted);
-  margin: 0 0 14px;
-}
-
-.task-card {
+/* ---- Top bar (search + theme toggle) ---- */
+.top-bar {
   display: flex;
   align-items: center;
-  gap: 10px;
-  background: var(--accent-soft);
-  border-radius: 8px;
-  padding: 10px 12px;
-  margin-bottom: 10px;
-  font-size: 14px;
+  gap: 12px;
+  padding: 0 32px 8px;
 }
 
-.task-card input[type="checkbox"] {
-  width: 16px;
-  height: 16px;
-  accent-color: var(--accent);
+.theme-toggle {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 12px;
   cursor: pointer;
-}
-
-.task-card span {
-  flex: 1;
-}
-
-/* ---- Modal ---- */
-.modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(15, 18, 25, 0.45);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 50;
-}
-
-.modal-box {
-  background: var(--surface);
-  border-radius: var(--radius);
-  padding: 24px;
-  width: 320px;
-  max-width: 90vw;
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
-}
-
-.modal-box h3 {
-  margin: 0 0 8px;
   font-size: 16px;
-}
-
-.modal-box p {
-  margin: 0 0 16px;
-  color: var(--text-muted);
-  font-size: 14px;
-}
-
-/* .modal-box button {
-  background: var(--accent);
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  padding: 8px 14px;
-  font-size: 13px;
-  cursor: pointer;
-}
-
-/* دکمه‌ی جزئیات داخل کارت */
-.task-card > button {
-  background: transparent;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 4px 10px;
-  font-size: 12px;
-  color: var(--text-muted);
-  cursor: pointer;
-}
-*/ .btn {
-  border: none;
-  border-radius: 6px;
-  padding: 6px 12px;
-  font-size: 13px;
-  cursor: pointer;
-}
-
-.btn-primary {
-  background: var(--accent);
-  color: #fff;
-  border: none;
-  border-radius: var(--radius);
-}
-
-.btn-secondary {
-  background: transparent;
-  border: 1px solid var(--border);
-  color: var(--text-muted);
-}
-
-.status-message {
-  padding: 20px;
-  text-align: center;
-  font-size: 16px;
-  color: var(--text-muted);
-}
-
-/* ---- Danger button variant ---- */
-.btn-danger {
-  background: transparent;
-  border: 1px solid #f3c2c2;
-  color: #d64545;
-}
-
-.btn-danger:hover {
-  background: #fdecec;
-}
-
-/* ---- Task card: چیدمان بهتر با چند دکمه ---- */
-.task-card {
-  flex-wrap: wrap;
-}
-
-.task-card .btn {
-  margin-inline-start: auto;
-}
-
-.task-card .btn + .btn {
-  margin-inline-start: 6px;
-}
-
-/* ---- Add task form ---- */
-.column form {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-top: 10px;
-}
-
-.column form input {
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 8px 10px;
-  font-size: 14px;
-  font-family: inherit;
-}
-
-.column form input:focus {
-  outline: none;
-  /* border-color: var(--accent); */
-  border: 1px solid var(--accent);
-}
-
-.column form div {
-  display: flex;
-  gap: 8px;
-}
-
-/* ---- دکمه‌ی "+ Add Task" فاصله از لیست تسک‌ها ---- */
-.column > .btn-secondary:last-child {
-  margin-top: 10px;
-  width: 100%;
 }
 
 /* ---- Search input ---- */
@@ -233,63 +87,6 @@ h1 {
   color: var(--text-muted);
 }
 
-.column-drag-over {
-  background: var(--accent-light, #eef2ff);
-  outline: 2px dashed var(--accent);
-}
-
-.task-card {
-  cursor: grab;
-}
-
-.task-card:active {
-  cursor: grabbing;
-}
-
-.task-card {
-  position: relative;
-}
-
-.task-card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.task-menu-trigger {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 16px;
-  padding: 2px 6px;
-}
-
-.task-menu {
-  position: absolute;
-  top: 30px;
-  right: 8px;
-  background: white;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  display: flex;
-  flex-direction: column;
-  z-index: 10;
-  min-width: 140px;
-}
-
-.task-menu button {
-  background: none;
-  border: none;
-  text-align: left;
-  padding: 8px 12px;
-  cursor: pointer;
-}
-
-.task-menu button:hover {
-  background: var(--surface, #f5f5f5);
-}
-
 /* ---- Board & Columns ---- */
 .board {
   display: flex;
@@ -299,17 +96,17 @@ h1 {
 }
 
 .column {
-  background: #f4f5f7;
+  position: relative;
+  background: var(--surface);
   border-radius: var(--radius, 8px);
   padding: 12px;
   width: 280px;
   flex-shrink: 0;
   transition: background 0.15s ease;
-  position: relative;
 }
 
 .column-drag-over {
-  background: #dfe6f0;
+  background: var(--drag-over-bg);
   outline: 2px dashed var(--accent);
 }
 
@@ -390,14 +187,13 @@ h1 {
 /* ---- Task Card ---- */
 .task-card {
   position: relative;
-  background: white;
+  background: var(--card-bg);
   border-radius: 6px;
   box-shadow: 0 1px 2px rgba(9, 30, 66, 0.15);
   padding: 10px 12px;
   margin-bottom: 8px;
   cursor: grab;
 }
-
 .task-card:active {
   cursor: grabbing;
 }
@@ -424,7 +220,6 @@ h1 {
 }
 
 .task-title-done {
-  /* text-decoration: line-through; */
   opacity: 0.55;
 }
 
@@ -458,10 +253,155 @@ h1 {
   gap: 8px;
 }
 
+/* ---- Due date picker (hidden input trick) ---- */
 .hidden-date-input {
   position: absolute;
   width: 1px;
   height: 1px;
   opacity: 0;
   pointer-events: none;
+}
+
+/* ---- Modal ---- */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 18, 25, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+}
+
+.modal-box {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 24px;
+  width: 320px;
+  max-width: 90vw;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
+}
+
+.modal-box h3 {
+  margin: 0 0 8px;
+  font-size: 16px;
+}
+
+.modal-box p {
+  margin: 0 0 16px;
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+/* ---- Buttons ---- */
+.btn {
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius);
+}
+
+.btn-secondary {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+}
+
+.status-message {
+  padding: 20px;
+  text-align: center;
+  font-size: 16px;
+  color: var(--text-muted);
+}
+
+.column {
+  position: relative;
+  background: var(--surface); /* بود: #f4f5f7 */
+  border-radius: var(--radius, 8px);
+  padding: 12px;
+  width: 280px;
+  flex-shrink: 0;
+  transition: background 0.15s ease;
+}
+
+.column-header h2 {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin: 0;
+}
+
+.column-menu-trigger,
+.task-menu-trigger {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
+  color: var(--text-muted);
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.column-menu,
+.task-menu {
+  position: absolute;
+  background: var(--surface);
+  border-radius: 6px;
+  box-shadow: 0 8px 20px rgba(9, 30, 66, 0.2);
+  display: flex;
+  flex-direction: column;
+  padding: 6px;
+  z-index: 20;
+  min-width: 160px;
+}
+
+.column-menu button,
+.task-menu button {
+  background: none;
+  border: none;
+  text-align: left;
+  padding: 8px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--text);
+}
+
+.column-menu button:hover,
+.task-menu button:hover {
+  background: var(--bg);
+}
+
+.task-title {
+  flex: 1;
+  font-size: 14px;
+  color: var(--text);
+  word-break: break-word;
+}
+
+.column form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+  background: var(--card-bg);
+  border-radius: 6px;
+  padding: 8px;
+  box-shadow: 0 1px 2px rgba(9, 30, 66, 0.15);
+}
+
+.column-drag-over {
+  background: var(--drag-over-bg);
+  outline: 2px dashed var(--accent);
 }
