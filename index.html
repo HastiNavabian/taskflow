@@ -4,8 +4,16 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Taskio</title>
+    <link rel="stylesheet" href="/src/index.css" />
   </head>
   <body>
+    <script>
+      (function () {
+        var storedTheme = localStorage.getItem("theme");
+        var theme = storedTheme === "dark" ? "dark" : "light";
+        document.body.className = theme;
+      })();
+    </script>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
