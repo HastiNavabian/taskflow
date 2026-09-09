@@ -58,7 +58,11 @@ function Column({
       className={`column ${isOver ? "column-drag-over" : ""}`}
     >
       <div className="column-header">
-        <h2>{title}</h2>
+        <h2>
+          {title}
+
+          <span className="task-count">{tasks.length}</span>
+        </h2>
         <button
           type="button"
           ref={triggerRef}
