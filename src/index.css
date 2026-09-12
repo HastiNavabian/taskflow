@@ -422,7 +422,6 @@ body.theme-transition {
     transform 0.15s ease,
     border-color 0.15s ease;
 }
-
 .theme-toggle:hover {
   background: var(--drag-over-bg);
   border-color: var(--accent);
